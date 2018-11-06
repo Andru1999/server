@@ -7921,3 +7921,9 @@ ER_KEY_DOESNT_SUPPORT
         eng "%s index %`s does not support this operation"
 ER_ALTER_OPERATION_TABLE_OPTIONS_NEED_REBUILD
 	eng "Changing table options requires the table to be rebuilt"
+ER_BACKUP_LOCK_IS_ACTIVE
+        eng "Can't execute the command as you have a BACKUP STAGE active"
+ER_BACKUP_WRONG_STAGE
+        eng "Backup stage '%s' is before current backup stage '%s'"
+ER_BACKUP_STAGE_FAILED
+        eng "Backup stage '%s' failed"

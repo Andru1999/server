@@ -2514,6 +2514,12 @@ connection con2;
 SET DEBUG_SYNC= 'now WAIT_FOR table_opened';
 # Check that FLUSH must wait to get the GRL
 # and let DROP PROCEDURE continue
+SELECT LOCK_MODE, LOCK_TYPE, TABLE_SCHEMA, TABLE_NAME FROM information_schema.metadata_lock_info;
+LOCK_MODE	LOCK_TYPE	TABLE_SCHEMA	TABLE_NAME
+MDL_BACKUP_STMT	Backup lock		
+MDL_EXCLUSIVE	Stored procedure metadata lock	test	p1
+MDL_INTENTION_EXCLUSIVE	Schema metadata lock	test	
+MDL_SHARED_WRITE	Table metadata lock	mysql	proc
 SET DEBUG_SYNC= 'mdl_acquire_lock_wait SIGNAL grlwait';
 FLUSH TABLES WITH READ LOCK;
 connection default;

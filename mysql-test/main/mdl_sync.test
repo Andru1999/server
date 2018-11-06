@@ -2,6 +2,7 @@
 # We need the Debug Sync Facility.
 #
 --source include/have_debug_sync.inc
+--source include/have_metadata_lock_info.inc
 
 # We need InnoDB tables for some of the tests.
 --source include/have_innodb.inc
@@ -3248,6 +3249,7 @@ connection con2;
 SET DEBUG_SYNC= 'now WAIT_FOR table_opened';
 --echo # Check that FLUSH must wait to get the GRL
 --echo # and let DROP PROCEDURE continue
+SELECT LOCK_MODE, LOCK_TYPE, TABLE_SCHEMA, TABLE_NAME FROM information_schema.metadata_lock_info;
 SET DEBUG_SYNC= 'mdl_acquire_lock_wait SIGNAL grlwait';
 --send FLUSH TABLES WITH READ LOCK
 

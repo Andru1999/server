@@ -1179,10 +1179,8 @@ static bool wsrep_tables_accessible_when_detached(const TABLE_LIST *tables)
 {
   for (const TABLE_LIST *table= tables; table; table= table->next_global)
   {
-    TABLE_CATEGORY c;
     LEX_CSTRING db= table->db, tn= table->table_name;
-    c= get_table_category(&db, &tn);
-    if (c != TABLE_CATEGORY_INFORMATION && c != TABLE_CATEGORY_PERFORMANCE)
+    if (get_table_category(&db, &tn)  < TABLE_CATEGORY_INFORMATION)
       return false;
   }
   return true;
@@ -5174,7 +5172,8 @@ end_with_restore_list:
       thd->mdl_context.release_transactional_locks();
       thd->variables.option_bits&= ~(OPTION_TABLE_LOCK);
     }
-    if (thd->global_read_lock.is_acquired())
+    if (thd->global_read_lock.is_acquired() &&
+        thd->current_backup_stage == BACKUP_FINISHED)
       thd->global_read_lock.unlock_global_read_lock(thd);
     if (res)
       goto error;
